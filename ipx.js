@@ -58,7 +58,7 @@ var dataBuffer = null;
 
 exports.load = function (file) {
     if (dataBuffer == null) {
-        console.log('loadBinaryData: ' + file.path)
+        console.log('loadBinaryData: ' + file)
         dataBuffer = loadBinaryData(file);
     }
 }
