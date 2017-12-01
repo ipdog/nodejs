@@ -1,7 +1,7 @@
 var fs = require('fs');
 var dns = require('dns');
 
-var loadBinaryData = function(filepath){
+var loadBinaryData = function (filepath) {
     var fd = fs.openSync(filepath, 'r');
     var indexLengthBuffer = new Buffer(4);
     var chunkSize = 102400,
@@ -23,13 +23,15 @@ var loadBinaryData = function(filepath){
     return Buffer.concat(chunks);
 };
 
-var IpFind = function(ip){
+var IpFind = function (ip) {
     if (dataBuffer == null) {
         return [];
     }
     var ipArray = ip.trim().split('.'),
-        ip2long = function(ip){return new Buffer(ip.trim().split('.')).readInt32BE(0)},
-        ipInt   = ip2long(ip);
+        ip2long = function (ip) {
+            return new Buffer(ip.trim().split('.')).readInt32BE(0)
+        },
+        ipInt = ip2long(ip);
 
     var offset = dataBuffer.readInt32BE(0);
     var indexBuffer = dataBuffer.slice(4, offset - 4 + 4);
@@ -54,13 +56,14 @@ var IpFind = function(ip){
 
 var dataBuffer = null;
 
-exports.load = function(file){
+exports.load = function (file) {
     if (dataBuffer == null) {
+        console.log('loadBinaryData: ' + file.path)
         dataBuffer = loadBinaryData(file);
     }
 }
 
-exports.find = function(name, callback){
+exports.find = function (name, callback) {
     dns.resolve4(name, function (err, addresses) {
         if (err) {
             callback(IpFind(name));
